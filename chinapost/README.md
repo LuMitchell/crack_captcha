@@ -11,8 +11,9 @@
 我们不需要其他的信息，直接清空。
 
 再点击查询按钮，我们看到有三条请求，分别是：
-1、请求验证码图片
-2、背景验证码图片
-3、小块验证码图片
 
-![1](chinapost/images/61826.png)
+1. 请求验证码图片
+2. 背景验证码图片
+3. 小块验证码图片
+
+![1](https://github.com/LuMitchell/crack_captcha/blob/master/chinapost/images/61826.png)
