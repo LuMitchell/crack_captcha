@@ -58,8 +58,79 @@
 
 算是基础的滑动验证码。
 
-## 破解
+## 识别
 
+观察缺失的背景图片，使用取色工具取出中间缺失的rgb值为（255,255,255）。使用量取工具测定验证码图片左边到缺失处左边的距离为（184），与我们提交的**moveEnd_X**对应。可以确定这个参数就是这两边的距离。
 
+![8](https://github.com/LuMitchell/crack_captcha/blob/master/chinapost/images/62807.png)
 
+这时候只要找到开始缺失白边的坐标，我们从左到右遍历每一个像素点，当像素点rgb为（255,255,255）连续出现4次时判定为缺失处的最左边，也就是我们需要的距离。
+
+这里使用PHP代码
+
+```
+//验证码图片大小为 300x180
+define('IMAGE_WIDTH', 300);
+define('IMAGE_HEIGHT', 180);
+
+function getPos($image)
+{
+    $res = imagecreatefromstring($image);
+    $canvas = imagecreatetruecolor(IMAGE_WIDTH, IMAGE_HEIGHT);
+    imagecopy($canvas, $res, 0, 0, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+    $white = imagecolorallocate($canvas, 255, 255, 255);
+    imagefill($canvas, 0, 0, $white);
+    imagetruecolortopalette($canvas, false, 256);
+
+    for($i = 10; $i < IMAGE_WIDTH; $i++)//有时候会产生白边干扰，我们偏移一点从10开始
+    {
+        $white = 0;
+        for($j = 10; $j < IMAGE_HEIGHT; $j++)
+        {
+            $rgb = imagecolorat($canvas, $i, $j);
+            $rgbarray = imagecolorsforindex($canvas, $rgb);
+
+            //这里代码获取的rgb （252,255,250）与浏览器取出的rgb（255,255,255）有所差异
+            if($rgbarray['red'] >= 250 &&  $rgbarray['green'] >= 250 && $rgbarray['blue'] >= 250)
+            {
+                $white++;
+            }
+            if($white > 4)//当为white连续4次以上再进行一次检查，检查横向右边第x位（这里取4）是否也是为white（缺块内）
+            {
+                $rgb = imagecolorat($canvas, $i+4, $j);
+                $rgbarray = imagecolorsforindex($canvas, $rgb);
+                if($rgbarray['red'] >= 250 &&  $rgbarray['green'] >= 250 && $rgbarray['blue'] >= 250)
+                {
+                    return $i;//得到距离
+                }
+            }
+        }
+    }
+    return 0;//这里识别失败
+}
+```
+
+至此我们得到了**moveEnd_X**的值
+
+```
+$jsonarr = json_decode($image_result, true);
+
+$image64 = $jsonarr['YYPng_base64'];
+$uuid = $jsonarr['uuid'];
+echo '<img src="data:image/jpeg;base64,'.$image64.'">';
+
+$image = base64_decode($image64);
+$moveEnd_X = getPos($image);
+```
+
+带上所有参数请求
+
+```
+$url = 'http://yjcx.chinapost.com.cn/qps/showPicture/verify/slideVerifyCheck';
+$cfg['post'] = ['uuid'=>$uuid, 'moveEnd_X'=>$moveEnd_X, 'text[]'=>$number, 'selectType'=>1];
+```
+
+最后拿到正确的数据
+
+![9](https://github.com/LuMitchell/crack_captcha/blob/master/chinapost/images/63115.png)
 
