@@ -4,4 +4,4 @@
 
 ### ChinaPost
 
-url [http://yjcx.chinapost.com.cn/qps/yjcx](http://yjcx.chinapost.com.cn/qps/yjcx)
+url [中国邮政](https://github.com/LuMitchell/crack_captcha/tree/master/chinapost)
