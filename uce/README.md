@@ -20,6 +20,8 @@
 尺寸（115x50），单字符尺寸（18x30）
 背景为（255,255,255），存在干扰线（5,5,5），验证码rgb值范围广，但我们只要排除**背景**和**干扰线**，剩下的就是我们需要的验证码了。
 
+![1](https://github.com/LuMitchell/crack_captcha/blob/master/images/captcha.jpg)
+
 
 ## 识别
 
