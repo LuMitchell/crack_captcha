@@ -284,3 +284,16 @@ foreach($data as $numStr)
     $result .= $num;
 }
 ```
+
+### 识别成功
+
+![7](https://github.com/LuMitchell/crack_captcha/blob/master/images/620.jpg)
+
+![8](https://github.com/LuMitchell/crack_captcha/blob/master/images/test536.jpg)
+
+![9](https://github.com/LuMitchell/crack_captcha/blob/master/images/70607.png)
+
+
+## 获取结果
+
+
