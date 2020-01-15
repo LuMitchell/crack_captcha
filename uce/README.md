@@ -213,7 +213,7 @@ for($i = 0; $i < $this->ImageWidth; $i++)
 
 `var_dump($data);`
 
-![6](https://github.com/LuMitchell/crack_captcha/blob/master/images/61927.jpg)
+![6](https://github.com/LuMitchell/crack_captcha/blob/master/images/61927.png)
 
 人工判断，将正确的值填入。
 
