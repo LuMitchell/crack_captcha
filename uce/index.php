@@ -1,4 +1,4 @@
-
+<?php
 require_once 'bkcaptcha.php' ;
 
 $cfg['returnheader'] = true;
